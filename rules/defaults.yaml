@@ -1,0 +1,53 @@
+﻿'v' : 1.0.0
+'pre-rules' : []
+
+'post-rules' : !!pairs
+# autocorrect (flexible)
+#  - 'ँँ': 'ँ'
+#  - 'ंं': 'ं'
+#  - 'ेे': 'े'
+#  - 'ैै': 'ै'
+#  - 'ुु': 'ु'
+#  - 'ूू': 'ू'
+#  - 'टृ': 'ट्ट'
+  - '^ः': ':'
+  - '(\s)ः': '\1:'
+  - 'ेा': 'ाे'
+  - 'ैा': 'ाै'
+
+  # FU some consonants don't have full form like ण ष
+  - '्ा': ''
+
+  # FU ई doesn't have a direct representation in bakaman
+  - 'इ{': 'ई'
+
+  # FU shift m just after त्र त्त उ भ प
+  # m doesn't have a mapping in unicode
+  - '(त्र|त्त|उ|भ|प)((?:(?!त्र|त्त|उ|भ|प).)+?)m': '\1m\2'
+  - 'त्रm': 'क्र'
+  - 'त्तm': 'क्त'
+  - 'उm': 'ऊ'
+  - 'भm': 'झ'
+  - 'पm': 'फ'
+
+  # FU shift िbehind next full consonant
+  - 'ि((.्)*.)': '\1ि'
+
+  # FU shift { infront of preceding half-consonants + consonant + matras . nasals
+  # expand { to र्
+  - '((?:.्)*.[ािीुूृेैोौंःँ]*?){': 'र्\1'
+
+  # Fix for some substitution like ् + र
+  - '([ाीुूृेैोौंःँ]+?)(्(.्)*[^्])': '\2\1'  # shift all matras behind next full consonant
+  - '्([ाीुूृेैोौंःँ]+?)((.्)*[^्])': '्\2\1'  # shift all matras behind next full consonant
+
+  # FU shift nasal after matras
+  - '([ंँ])([ािीुूृेैोौः]+)': '\2\1' 
+
+# FU fix vowels
+  - 'अाे': 'ओ'
+  - 'अाै': 'औ'
+  - 'अा': 'आ'
+  - 'एे': 'ऐ'
+  - 'ाे': 'ो'
+  - 'ाै': 'ौ'
