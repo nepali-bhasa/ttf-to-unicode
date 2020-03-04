@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
-from fontTools.ttLib import TTFont
-import yaml
-import sys
+from argparse import ArgumentParser
 from collections import OrderedDict
+
+import yaml
+from fontTools.ttLib import TTFont
 
 
 def represent_dictionary_order(self, dict_data):
@@ -45,14 +46,31 @@ def get_font_characters(name, input_file, output_file):
         yaml.dump(yml, file, allow_unicode=True)
 
 
-def main():
-    if len(sys.argv) < 4:
-        print('Font name, source, destination must be specified')
-        return 1
+def default_args():
+    default_parser = ArgumentParser()
+    default_parser.add_argument(
+        "-f", "--font",
+        help="Font Name",
+        required=True
+    )
+    default_parser.add_argument(
+        "-s", "--source",
+        help="Font source file",
+        required=True
+    )
+    default_parser.add_argument(
+        "-d", "--destination",
+        help="Destination mapping file",
+        required=True
+    )
+    return default_parser.parse_args()
 
-    name = sys.argv[1]
-    input_file = sys.argv[2]
-    output_file = sys.argv[3]
+
+def main():
+    parsed_args = default_args()
+    name = parsed_args.font
+    input_file = parsed_args.source
+    output_file = parsed_args.destination
     get_font_characters(name, input_file, output_file)
 
 
