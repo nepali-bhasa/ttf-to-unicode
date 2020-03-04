@@ -1,5 +1,6 @@
-import re
 import os
+import re
+
 import yaml
 
 DEFAULTS_FILE = 'defaults.yaml'
@@ -37,19 +38,19 @@ def load_rules(yaml_path):
     return all_rules
 
 
-def convert_word(word, rule, debugRuleIndex=None):
+def convert_word(word, rule, debug_rule_index=None):
     utf_word = word
-    for rulez in rule['pre-rules']:
+    for rulez in rule.get('pre-rules', []):
         utf_word = re.sub(rulez[0], rulez[1], utf_word)
 
     utf_word = ''.join([
         rule['char-map'].get(c, c) for c in utf_word
     ])
 
-    for i, rulez in enumerate(rule['post-rules']):
+    for i, rulez in enumerate(rule.get('post-rules', [])):
         old_word = utf_word
         utf_word = re.sub(rulez[0], rulez[1], utf_word)
-        if debugRuleIndex and i == debugRuleIndex:
+        if debug_rule_index and i == debug_rule_index:
             print(old_word, '->', utf_word)
 
     return utf_word
